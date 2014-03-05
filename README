@@ -1,0 +1,5 @@
+pSketcher is a parametric 2D sketcher application with constraints,
+originally written by Michael Greminger.  It uses Qt for visualization.
+
+This fork aims to do some refactoring (eliminate the need for Boost,
+tweak the build system, whatever else looks like it makes sense.
