@@ -1,0 +1,15 @@
+distance_point_2d(point1s,point1t,point2s,point2t,distance) = sqrt((point1s-point2s)**2+(point1t-point2t)**2) - distance
+angle_line_2d_interior(line1_point1s,line1_point1t,line1_point2s,line1_point2t,line2_point1s,line2_point1t,line2_point2s,line2_point2t,angle) [line1_ds = line1_point1s-line1_point2s, line1_dt = line1_point1t-line1_point2t, line2_ds = line2_point1s-line2_point2s, line2_dt = line2_point1t-line2_point2t, line1_length = sqrt(line1_ds**2+line1_dt**2), line2_length = sqrt(line2_ds**2+line2_dt**2)] = (1/(line1_length*line2_length))*(line1_ds*line2_ds + line1_dt*line2_dt)-cos(angle)
+angle_line_2d_exterior(line1_point1s,line1_point1t,line1_point2s,line1_point2t,line2_point1s,line2_point1t,line2_point2s,line2_point2t,angle) [line1_ds = line1_point1s-line1_point2s, line1_dt = line1_point1t-line1_point2t, line2_ds = line2_point1s-line2_point2s, line2_dt = line2_point1t-line2_point2t, line1_length = sqrt(line1_ds**2+line1_dt**2), line2_length = sqrt(line2_ds**2+line2_dt**2)] = (1/(line1_length*line2_length))*(line1_ds*line2_ds + line1_dt*line2_dt)-cos(pi-angle)
+tangent_edge_2d(s1,t1,s2,t2) = (s1*s2+t1*t2)**2-1
+parallel_line_2d(line1_point1s,line1_point1t,line1_point2s,line1_point2t,line2_point1s,line2_point1t,line2_point2s,line2_point2t) [line1_ds = line1_point1s-line1_point2s, line1_dt = line1_point1t-line1_point2t, line2_ds = line2_point1s-line2_point2s, line2_dt = line2_point1t-line2_point2t, line1_length = sqrt(line1_ds**2+line1_dt**2), line2_length = sqrt(line2_ds**2+line2_dt**2)] = ((1/(line1_length*line2_length))*(line1_ds*line2_ds + line1_dt*line2_dt))**2-1
+arc2d_point_s(s_center,radius,theta) = s_center + radius*cos(theta)
+arc2d_point_t(t_center,radius,theta) = t_center + radius*sin(theta)
+arc2d_tangent_s(theta) = sin(theta)
+arc2d_tangent_t(theta) = -cos(theta)
+point2d_tangent1_s(point1s,point1t,point2s,point2t)[length=sqrt((point1s-point2s)**2+(point1t-point2t)**2)]=(point1s-point2s)/length
+point2d_tangent1_t(point1s,point1t,point2s,point2t)[length=sqrt((point1s-point2s)**2+(point1t-point2t)**2)]=(point1t-point2t)/length
+point2d_tangent2_s(point1s,point1t,point2s,point2t)[length=sqrt((point1s-point2s)**2+(point1t-point2t)**2)]=(point2s-point1s)/length
+point2d_tangent2_t(point1s,point1t,point2s,point2t)[length=sqrt((point1s-point2s)**2+(point1t-point2t)**2)]=(point2t-point1t)/length
+distance_point_line_2d(point_s,point_t,line_point1s,line_point1t,line_point2s,line_point2t,distance) = (((line_point2s - line_point1s)*(line_point1t - point_t) - (line_point2t - line_point1t)*(line_point1s - point_s)))**2 / ( (line_point2s - line_point1s)**2 + (line_point2t - line_point1t)**2) - (distance)**2
+hori_vert_2d(dof1,dof2) = dof1 - dof2

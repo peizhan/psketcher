@@ -1,0 +1,109 @@
+/*
+Copyright (c) 2006-2014, Michael Greminger
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation 
+and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF A
+DVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+#include <cmath>
+
+#include "SolverFunctions.h"
+
+using namespace std;
+<%!
+from sympy import ccode
+%>
+
+SolverFunctionsBasePointer SolverFunctionsFactory(std::string solver_function_name, std::vector<DOFPointer> dof_list)
+{
+    SolverFunctionsBasePointer new_solver_function;
+
+%for index,equation in enumerate(equations):
+    %if index == 0:
+    if(solver_function_name == "${equation.function_name}")
+        new_solver_function.reset(new ${equation.function_name}(dof_list));
+    %else:
+    else if (solver_function_name == "${equation.function_name}")
+        new_solver_function.reset(new ${equation.function_name}(dof_list));
+    %endif
+%endfor
+    else
+        throw SolverFunctionsException("SolverFunctionsFactory: Requested solver function name not found.");
+
+    return new_solver_function;
+}
+
+%for equation in equations:
+
+${equation.function_name}::${equation.function_name}(${make_parameter_list(equation.parameter_list)})
+{
+    %for parameter in equation.parameter_list:
+    AddDOF(${parameter});
+    %endfor
+}
+
+${equation.function_name}::${equation.function_name}(std::vector<DOFPointer> dof_list)
+{
+    // Check to make sure the correct number of parameters have been provided
+    if(dof_list.size() != ${len(equation.parameter_list)})
+        throw SolverFunctionsException("The DOF vector for the constructor of SolverFunction ${equation.function_name} did not contain exactly ${len(equation.parameter_list)} DOF's");
+    
+    for(int i=0; i<dof_list.size(); i++)
+        AddDOF(dof_list[i]);
+}
+
+double ${equation.function_name}::GetValue() const
+{
+    %for index,parameter in enumerate(equation.parameter_list):
+    double ${parameter} = GetDOF(${index})->GetValue();
+    %endfor
+
+    return ${ccode(equation.expression)};
+}
+
+double ${equation.function_name}::GetValueSelf(const mmcMatrix &params) const
+{
+    %for index,parameter in enumerate(equation.parameter_list):
+    double ${parameter} = params(${index},0);
+    %endfor
+
+    return ${ccode(equation.expression)};
+}
+
+mmcMatrix ${equation.function_name}::GetGradientSelf(const mmcMatrix &params) const
+{
+    mmcMatrix result(GetNumDOFs(),1);
+
+    %for index,parameter in enumerate(equation.parameter_list):
+    double ${parameter} = params(${index},0);
+    %endfor
+
+    %for index,parameter in enumerate(equation.parameter_list):
+    result(${index},0) = ${ccode(equation.expression.diff(parameter))};
+    %endfor
+
+    return result;
+}
+%endfor
+
+<%def name="make_parameter_list(parameter_list)">\
+% for index,parameter in enumerate(parameter_list):
+DOFPointer ${parameter}\
+        % if index < len(parameter_list)-1:
+, \
+        % endif
+    % endfor
+</%def>

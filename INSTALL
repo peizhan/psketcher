@@ -1,0 +1,32 @@
+Installation Instructions
+-------------------------
+
+
+Dependencies
+-----------------------
+
+qt4 (must have qt version 4.4 or greater)
+cmake (this is the build system used, verion 2.6 or greater)
+boost C++ libraries 
+boost-filesystem
+dime (for DXF file output, must be BSD version of dime available here https://bitbucket.org/Coin3D/dime
+	  ubuntu currently packages the GPL version of dime)
+
+
+Build and run instructions
+----------------------------
+
+1. run cmake ./
+2. run make
+3. execute psketcher in the src/Interface directory
+
+
+Example build and run process
+------------------------------------
+
+cmake .
+make
+./src/Interface/psketcher
+
+
+

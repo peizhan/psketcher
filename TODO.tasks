@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<gtodo>
+  <category title="Personal" place="0">
+    <item>
+      <attribute id="1167243277" priority="1" done="0" start_date="732672" enddate="99999999" notify="0" endtime="-60" last_edited="1167243277"/>
+      <summary>Fix pixmap directory problem</summary>
+      <comment>src/Makefile.am currently passes path to the program</comment>
+    </item>
+    <item>
+      <attribute id="1167243338" priority="1" done="0" start_date="732672" enddate="99999999" notify="0" endtime="-60" last_edited="1167243338"/>
+      <summary>Add opencascade options to configure script</summary>
+      <comment></comment>
+    </item>
+  </category>
+  <category title="Business" place="1"/>
+  <category title="Unfiled" place="2"/>
+</gtodo>
