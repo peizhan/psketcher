@@ -1,14 +1,6 @@
 # The fllowing forces cmake to show the compiler command line arguements, usefull for debugging
 SET (CMAKE_VERBOSE_MAKEFILE TRUE)
 
-# Add local link paths
-LINK_DIRECTORIES ("../mmcMatrix")
-LINK_DIRECTORIES ("../NumOptimization")
-LINK_DIRECTORIES ("../ConstraintSolver")
-LINK_DIRECTORIES ("../QtBinding")
-# LINK_DIRECTORIES ("../PythonBinding")
-LINK_DIRECTORIES ("../InteractiveConstructors")
-
 find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})
 set(psketcher_SRCS
