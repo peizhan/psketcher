@@ -36,37 +36,9 @@ CHECK_FUNCTION_EXISTS(_finite HAVE__FINITE)
 CHECK_FUNCTION_EXISTS(fpclass HAVE_FPCLASS)
 CHECK_FUNCTION_EXISTS(_fpclass HAVE__FPCLASS)
 
-AM_CONFIG_HEADER([include/config.h])
+configure_file(include/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/include/config.h)
 
-AC_CONFIG_FILES([
-	dime.pc
-	Makefile
-	bin/Makefile
-	src/Makefile
-	src/classes/Makefile
-	src/entities/Makefile
-	src/objects/Makefile
-	src/records/Makefile
-	src/sections/Makefile
-	src/tables/Makefile
-	src/util/Makefile
-	src/convert/Makefile
-	dxf2vrml/Makefile
-	dxfsphere/Makefile
-	html/Makefile
-])
-
-AC_OUTPUT
-
-# **************************************************************************
-
-SIM_AC_CONFIGURATION_SUMMARY
-
-echo ""
-echo "Done.  Now run make install to build $PACKAGE."
-echo ""
-
-# **************************************************************************
+add_subdirectory(src)
 
 # Local Variables:
 # tab-width: 8
